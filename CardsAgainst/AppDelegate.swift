@@ -24,7 +24,6 @@ private final class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = navBarColor
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: lightColor]
         window.tintColor = appTintColor
-        print("Hello world!")
 
         // Simultaneously advertise and browse for other players
         ConnectionManager.start()
