@@ -13,12 +13,12 @@ private let pg13 = true
 private func loadCards() -> ([Card], [Card]) {
     let resourceName = pg13 ? "cards_pg13" : "cards"
     let jsonPath = NSBundle.mainBundle().pathForResource(resourceName, ofType: "json")
-    let cards = NSJSONSerialization.JSONObjectWithData(NSData(contentsOfFile: jsonPath!)!, options: nil, error: nil) as [[String: String]]
-
+    let cards = try? NSJSONSerialization.JSONObjectWithData(NSData(contentsOfFile: jsonPath!)!, options: .AllowFragments) as! [[String: String]]
+    
     var whiteCards = [Card]()
     var blackCards = [Card]()
 
-    for card in cards {
+    for card in cards! {
         let card = Card(content: card["text"]!,
             type: CardType(rawValue: card["cardType"]!)!,
             expansion: card["expansion"]!)
@@ -49,7 +49,7 @@ struct CardManager {
     private static func takeRandom<U>(inout mutable: [U], original: [U]) -> U {
         if mutable.count == 0 {
             // reshuffle
-            mutable = original.sorted { _ in arc4random() % 2 == 0 }
+            mutable = original.sort { _ in arc4random() % 2 == 0 }
         }
         return mutable.removeLast()
     }

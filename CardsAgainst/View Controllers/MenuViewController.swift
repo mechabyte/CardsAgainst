@@ -13,7 +13,7 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
 
     // MARK: Properties
 
-    private let startGameButton = UIButton.buttonWithType(.System) as UIButton
+    private let startGameButton = UIButton(type: .System) as UIButton
     private let separator = UIView()
     private let collectionView = UICollectionView(frame: CGRectZero,
         collectionViewLayout: UICollectionViewFlowLayout())
@@ -29,6 +29,7 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
         setupStartGameButton()
         setupSeparator()
         setupCollectionView()
+        print("loading")
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -41,7 +42,7 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
             self.updatePlayers()
         }
         ConnectionManager.onEvent(.StartGame) { _, object in
-            let dict = object as [String: NSData]
+            let dict = object as! [String: NSData]
             let blackCard = Card(mpcSerialized: dict["blackCard"]!)
             let whiteCards = CardArray(mpcSerialized: dict["whiteCards"]!).array
             self.startGame(blackCard: blackCard, whiteCards: whiteCards)
@@ -74,7 +75,7 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
 
     private func setupStartGameButton() {
         // Button
-        startGameButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        startGameButton.translatesAutoresizingMaskIntoConstraints = false
         startGameButton.titleLabel!.font = startGameButton.titleLabel!.font.fontWithSize(25)
         startGameButton.setTitle("Waiting For Players", forState: .Disabled)
         startGameButton.setTitle("Start Game", forState: .Normal)
@@ -91,12 +92,12 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
 
     private func setupSeparator() {
         // Separator
-        separator.setTranslatesAutoresizingMaskIntoConstraints(false)
+        separator.translatesAutoresizingMaskIntoConstraints = false
         separator.backgroundColor = lightColor
         view.addSubview(separator)
 
         // Layout
-        layout(separator, startGameButton) { separator, startGameButton in
+        layout(separator, v2: startGameButton) { separator, startGameButton in
             separator.top == startGameButton.bottom + 10
             separator.centerX == separator.superview!.centerX
             separator.width == separator.superview!.width - 40
@@ -106,20 +107,20 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
 
     private func setupCollectionView() {
         // Collection View
-        let cvLayout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
+        let cvLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         cvLayout.itemSize = CGSizeMake(separator.frame.size.width, 50)
         cvLayout.minimumLineSpacing = 0
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = UIColor.clearColor()
-        collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.registerClass(PlayerCell.self,
             forCellWithReuseIdentifier: PlayerCell.reuseID)
         collectionView.alwaysBounceVertical = true
         view.addSubview(collectionView)
 
         // Layout
-        layout(collectionView, separator) { collectionView, separator in
+        layout(collectionView, v2: separator) { collectionView, separator in
             collectionView.top == separator.bottom
             collectionView.left == separator.left
             collectionView.right == separator.right
@@ -136,7 +137,7 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
         startGame(blackCard: blackCard, whiteCards: whiteCards)
     }
 
-    private func startGame(#blackCard: Card, whiteCards: [Card]) {
+    private func startGame(blackCard blackCard: Card, whiteCards: [Card]) {
         let gameVC = GameViewController(blackCard: blackCard, whiteCards: whiteCards)
         navigationController!.pushViewController(gameVC, animated: true)
     }
@@ -163,7 +164,7 @@ final class MenuViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PlayerCell.reuseID, forIndexPath: indexPath) as PlayerCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PlayerCell.reuseID, forIndexPath: indexPath) as! PlayerCell
         cell.label.text = ConnectionManager.otherPlayers[indexPath.row].name
         return cell
     }

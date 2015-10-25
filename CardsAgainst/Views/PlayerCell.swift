@@ -19,20 +19,20 @@ final class PlayerCell: UICollectionViewCell {
         setupLabel()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     private func setupLabel() {
         // Label
         contentView.addSubview(label)
-        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = lightColor
         label.font = UIFont.boldSystemFontOfSize(22)
 
         // Layout
         layout(label) { label in
-            label.edges == inset(label.superview!.edges, 15, 10); return
+            label.edges == inset(label.superview!.edges, horizontal: 15, vertical: 10); return
         }
     }
 }

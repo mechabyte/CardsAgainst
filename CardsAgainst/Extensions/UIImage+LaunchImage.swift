@@ -12,7 +12,7 @@ extension UIImage {
     class func launchImage() -> UIImage {
         // We only care about iOS 8+ portrait iPhones
         // LaunchImage names found here: http://stackoverflow.com/a/25843887/373262
-        var launchImageName: String
+        var launchImageName: String!
         let screenHeight = UIScreen.mainScreen().bounds.size.height
         switch screenHeight {
         case 0..<568:

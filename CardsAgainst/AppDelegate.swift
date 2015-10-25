@@ -13,7 +13,7 @@ private final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private let window = UIWindow(frame: UIScreen.mainScreen().bounds)
 
-    private func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    @objc func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         // Window
         window.rootViewController = UINavigationController(rootViewController: MenuViewController())
@@ -24,6 +24,7 @@ private final class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = navBarColor
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: lightColor]
         window.tintColor = appTintColor
+        print("Hello world!")
 
         // Simultaneously advertise and browse for other players
         ConnectionManager.start()
